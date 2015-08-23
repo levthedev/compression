@@ -34,6 +34,5 @@ c.occurences
 c.uncompress
 
 Dir.chdir(File.dirname(__FILE__))
-Dir.pwd
 File.size?("compressed.txt")
 File.size?("test.txt")
