@@ -1,37 +1,39 @@
 class Compressor
-  attr_reader :occurences              # => nil
+  attr_reader :occurences
+
   def compress(filepath)
-    Dir.chdir(File.dirname(__FILE__))  # => 0
+    Dir.chdir(File.dirname(__FILE__))
 
-    file_array = []                              # => []
-    File.open(filepath, "r") do |f|              # => File
-      f.each_line { |line| file_array << line }  # => #<File:test.txt>
-    end                                          # => #<File:test.txt (closed)>
+    file_array = []
 
-    string = file_array.join(" ").split(" ")  # => ["Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow."]
+    File.open(filepath, "r") do |f|
+      f.each_line { |line| file_array << line }
+    end
 
-    @occurences = {}                                                        # => {}
-    string.each_with_index do |word, i|                                     # => ["Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow."]
-      @occurences[word] ? @occurences[word] << i : @occurences[word] = [i]  # => [0], [1], [2], [3], [4], [3, 5], [4, 6], [3, 5, 7], [4, 6, 8], [0, 9], [1, 10], [2, 11], [3, 5, 7, 12], [13], [14], [15], [16], [17], [18], [19], [0, 9, 20], [1, 10, 21], [2, 11, 22], [3, 5, 7, 12, 23], [4, 6, 8, 24], [3, 5, 7, 12, 23, 25], [4, 6, 8, 24, 26], [3, 5, 7, 12, 23, 25, 27], [4, 6, 8, 24, 26, 28], [0, 9, 20, 29], [1, 10, 21, 30], [2, 11, 22, 31], [3, 5, 7, 12, 23, 25, 27, 32], [13, 33], [14, 34], [15, 35], [16, 36], [17, 37], [18, 38], [19, 39], [0, 9, 20, 29, 40], [1, 10, 21, 30, 41], [2, 11, 22, 31, 42], [3, 5, 7, 12, 23, 25, 27, 32, 43], [4, 6, 8, 24, 26, 28, 44], [3, 5, 7, 12, 23, 25, 27, 32, 43, 45], [4, 6, 8, 24, 26, 28, 44, 46], [3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47], [4, 6, 8, 24, 26, 28, 44, 46, 48], [0, 9, 20, 29, 40, 49], [1, 10, 21, 30, 41, 50], [2, 11, 22, 31, 42, 51], [3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47, 52], [13, 33, 53], [14, 34, 54], [15, 35, 55], [16, 36, 56], [17, 3...
-    end                                                                     # => ["Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow."]
+    string = file_array.join(" ").split(" ")
+
+    @occurences = {}
+    string.each_with_index do |word, i|
+      @occurences[word] ? @occurences[word] << i : @occurences[word] = [i]
+    end
   end
 
   def uncompress
-    arr = []                                                           # => []
-    @occurences.each_pair do |word, occurences|                        # => {"Mary"=>[0, 9, 20, 29, 40, 49, 60, 69], "had"=>[1, 10, 21, 30, 41, 50, 61, 70], "a"=>[2, 11, 22, 31, 42, 51, 62, 71], "little"=>[3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47, 52, 63, 65, 67, 72], "lamb,"=>[4, 6, 8, 24, 26, 28, 44, 46, 48, 64, 66, 68], "lamb"=>[13, 33, 53, 73], "whose"=>[14, 34, 54, 74], "fleece"=>[15, 35, 55, 75], "was"=>[16, 36, 56, 76], "white"=>[17, 37, 57, 77], "as"=>[18, 38, 58, 78], "snow."=>[19, 39, 59, 79]}
-      occurences.each { |o| arr[o] ? arr[o] << word : arr[o] = word }  # => [0, 9, 20, 29, 40, 49, 60, 69], [1, 10, 21, 30, 41, 50, 61, 70], [2, 11, 22, 31, 42, 51, 62, 71], [3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47, 52, 63, 65, 67, 72], [4, 6, 8, 24, 26, 28, 44, 46, 48, 64, 66, 68], [13, 33, 53, 73], [14, 34, 54, 74], [15, 35, 55, 75], [16, 36, 56, 76], [17, 37, 57, 77], [18, 38, 58, 78], [19, 39, 59, 79]
-    end                                                                # => {"Mary"=>[0, 9, 20, 29, 40, 49, 60, 69], "had"=>[1, 10, 21, 30, 41, 50, 61, 70], "a"=>[2, 11, 22, 31, 42, 51, 62, 71], "little"=>[3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47, 52, 63, 65, 67, 72], "lamb,"=>[4, 6, 8, 24, 26, 28, 44, 46, 48, 64, 66, 68], "lamb"=>[13, 33, 53, 73], "whose"=>[14, 34, 54, 74], "fleece"=>[15, 35, 55, 75], "was"=>[16, 36, 56, 76], "white"=>[17, 37, 57, 77], "as"=>[18, 38, 58, 78], "snow."=>[19, 39, 59, 79]}
-    arr.join(" ")                                                      # => "Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow."
+    arr = []
+    hash = @occurences.each_pair do |word, occurences|
+      occurences.each { |o| arr[o] ? arr[o] << word : arr[o] = word }
+    end
+    arr.join(" ")
+    #hash = hash.to_s.delete(" ")                                       # => "{\"hello\"=>[0,1,2,3,4,5,6,7,8,9,10,11,12]}"
+    #File.open("compressed.txt", "w") {|f| f.write(hash)}               # => 41
   end
 end
-c = Compressor.new                                                     # => #<Compressor:0x007ffc8c034d10>
-c.compress("test.txt")                                                 # => ["Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow.", "Mary", "had", "a", "little", "lamb,", "little", "lamb,", "little", "lamb,", "Mary", "had", "a", "little", "lamb", "whose", "fleece", "was", "white", "as", "snow."]
-c.occurences                                                           # => {"Mary"=>[0, 9, 20, 29, 40, 49, 60, 69], "had"=>[1, 10, 21, 30, 41, 50, 61, 70], "a"=>[2, 11, 22, 31, 42, 51, 62, 71], "little"=>[3, 5, 7, 12, 23, 25, 27, 32, 43, 45, 47, 52, 63, 65, 67, 72], "lamb,"=>[4, 6, 8, 24, 26, 28, 44, 46, 48, 64, 66, 68], "lamb"=>[13, 33, 53, 73], "whose"=>[14, 34, 54, 74], "fleece"=>[15, 35, 55, 75], "was"=>[16, 36, 56, 76], "white"=>[17, 37, 57, 77], "as"=>[18, 38, 58, 78], "snow."=>[19, 39, 59, 79]}
+c = Compressor.new
+c.compress("test.txt")
+c.occurences
+c.uncompress
 
-File.open("compressed.txt", "w") do |file|
-  file.write(c.occurences)
-end
-
-c.uncompress                                                           # => "Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow. Mary had a little lamb, little lamb, little lamb, Mary had a little lamb whose fleece was white as snow."
-
-#c.f.gsub(" \n", "").delete("\n")                       # => true
+Dir.chdir(File.dirname(__FILE__))
+Dir.pwd
+File.size?("compressed.txt")
+File.size?("test.txt")
